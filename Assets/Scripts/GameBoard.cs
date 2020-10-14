@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// https://generalistprogrammer.com/game-design-development/unity-spawn-prefab-at-position-tutorial/
@@ -13,7 +15,7 @@ public class GameBoard : MonoBehaviour
 
     // Plane Properties
     private Bounds planeMeshBounds;
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +31,12 @@ public class GameBoard : MonoBehaviour
 
     private void Spawn()
     {
-        Vector3 randPos = Vector3.zero;
-        randPos.x = Random.Range(planeMeshBounds.min.x, planeMeshBounds.max.x);
-        randPos.z = Random.Range(planeMeshBounds.min.z, planeMeshBounds.max.z);
-        Debug.Log($"Placing apple at {randPos}");
-        GameObject obj = Instantiate (fruit, randPos, Quaternion.identity,plane);
-
+        var randomPosition = new Vector3(
+            Random.Range(planeMeshBounds.min.x, planeMeshBounds.max.x),
+            0.5f,
+            Random.Range(planeMeshBounds.min.z, planeMeshBounds.max.z)
+        );
+        Debug.Log($"Placing apple at {randomPosition}");
+        GameObject obj = Instantiate(fruit, randomPosition, Quaternion.identity, plane);
     }
 }

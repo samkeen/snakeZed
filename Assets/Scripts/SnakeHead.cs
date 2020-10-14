@@ -17,12 +17,14 @@ public class SnakeHead : MonoBehaviour
     {
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         transform.Translate(move * Time.deltaTime * snakeSpeed);
-        // Debug.Log($"y = {move.y}");
-        // controller.Move(move * Time.deltaTime * snakeSpeed);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log($"Trigger - Other: {other.name}");
+        if (other.CompareTag("Apple"))
+        {
+            Debug.Log($"Collided with apple");
+        }
     }
 }
