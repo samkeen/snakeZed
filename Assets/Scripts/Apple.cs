@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class Apple : MonoBehaviour
 {
+    /// <summary>
+    /// https://www.youtube.com/watch?v=TdiN18PR4zk&feature=youtu.be
+    /// </summary>
+    public delegate void EatenDelegate();
+    public event EatenDelegate eatenEvent;
+    
     private void OnEaten()
     {
-        GameEvents.current.AppleEaten();
+        // broadcast onEaten event
+        eatenEvent?.Invoke();
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     private void OnTriggerEnter(Collider other)
     {
         // broadcast "Was Eaten"

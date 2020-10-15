@@ -18,15 +18,31 @@ public class GameBoard : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
         Spawn();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
+        // subscribe to Apple.eatenEvent
+        FindObjectOfType<Apple>().eatenEvent += OnAppleEaten;
+    }
+
+    // Update is called once per frame
+    private void OnAppleEaten()
+    {
+        Debug.Log("**GameBoard Event Trigger**");
+    }
+
+    private void OnDisable()
+    {
+        // unsubscribe to Apple.eatenEvent
+        if (FindObjectOfType<Apple>() != null)
+        {
+            FindObjectOfType<Apple>().eatenEvent -= OnAppleEaten;
+        }
     }
 
     private void Spawn()
