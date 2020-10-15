@@ -13,6 +13,8 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private Transform plane;
     [SerializeField] private GameObject fruit;
 
+    private GameObject appleInstance;
+
     // Plane Properties
     private Bounds planeMeshBounds;
 
@@ -21,7 +23,7 @@ public class GameBoard : MonoBehaviour
     void Awake()
     {
         planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
-        Spawn();
+        SpawnApple();
     }
 
     private void Start()
@@ -34,6 +36,7 @@ public class GameBoard : MonoBehaviour
     private void OnAppleEaten()
     {
         Debug.Log("**GameBoard Event Trigger**");
+        SpawnApple();
     }
 
     private void OnDisable()
@@ -45,14 +48,24 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    private void Spawn()
+    private void SpawnApple()
     {
+        // @TODO ensure the random position is not the snakehead position
+        // https://app.clickup.com/t/e0rthb
         var randomPosition = new Vector3(
             Random.Range(planeMeshBounds.min.x, planeMeshBounds.max.x),
             0.5f,
             Random.Range(planeMeshBounds.min.z, planeMeshBounds.max.z)
         );
         Debug.Log($"Placing apple at {randomPosition}");
-        GameObject obj = Instantiate(fruit, randomPosition, Quaternion.identity, plane);
+        if (appleInstance != null)
+        {
+            appleInstance.transform.position = randomPosition;
+        }
+        else
+        {
+            appleInstance = Instantiate(fruit, randomPosition, Quaternion.identity);
+        }
+        
     }
 }
