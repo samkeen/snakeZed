@@ -6,11 +6,6 @@ using UnityEngine;
 public class SnakeHead : MonoBehaviour
 {
     [SerializeField] private float snakeSpeed = 10;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -19,12 +14,4 @@ public class SnakeHead : MonoBehaviour
         transform.Translate(move * Time.deltaTime * snakeSpeed);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"Trigger - Other: {other.name}");
-        if (other.CompareTag("Apple"))
-        {
-            Debug.Log($"Collided with apple");
-        }
-    }
 }

@@ -11,11 +11,10 @@ using Random = UnityEngine.Random;
 public class GameBoard : MonoBehaviour
 {
     [SerializeField] private Transform plane;
+    [SerializeField] private Transform snakeHead;
     [SerializeField] private GameObject fruit;
 
     private GameObject appleInstance;
-
-    // Plane Properties
     private Bounds planeMeshBounds;
 
 
@@ -23,19 +22,15 @@ public class GameBoard : MonoBehaviour
     void Awake()
     {
         planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
+        // lastBodySegment = bodySegment;
         SpawnApple();
-    }
-
-    private void Start()
-    {
         // subscribe to Apple.eatenEvent
         FindObjectOfType<Apple>().eatenEvent += OnAppleEaten;
     }
 
-    // Update is called once per frame
     private void OnAppleEaten()
     {
-        Debug.Log("**GameBoard Event Trigger**");
+        Debug.Log("**GameBoard saw apple eaten event**");
         SpawnApple();
     }
 
@@ -66,6 +61,5 @@ public class GameBoard : MonoBehaviour
         {
             appleInstance = Instantiate(fruit, randomPosition, Quaternion.identity);
         }
-        
     }
 }
