@@ -7,11 +7,11 @@ public class SnakeHead : MonoBehaviour
 {
     [SerializeField] private float snakeSpeed = 10;
 
-    // Update is called once per frame
     void Update()
     {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        var x = Input.GetAxis("Horizontal");
+        var z = Input.GetAxis("Vertical");
+        Vector3 move = new Vector3(x, 0, z);
         transform.Translate(move * Time.deltaTime * snakeSpeed);
     }
-
 }

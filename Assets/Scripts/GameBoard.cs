@@ -11,36 +11,28 @@ using Random = UnityEngine.Random;
 public class GameBoard : MonoBehaviour
 {
     [SerializeField] private Transform plane;
-    [SerializeField] private Transform snakeHead;
     [SerializeField] private GameObject fruit;
 
     private GameObject appleInstance;
     private Bounds planeMeshBounds;
+    private const int NECK_SEGMENT = 1;
 
 
     // Start is called before the first frame update
     void Awake()
     {
         planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
-        // lastBodySegment = bodySegment;
         SpawnApple();
         // subscribe to Apple.eatenEvent
-        FindObjectOfType<Apple>().eatenEvent += OnAppleEaten;
+        FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
+        // subscribe to SnakeBodySegment.ImpactedEvent
+        FindObjectOfType<SnakeBodySegment>().ImpactedByHeadEvent += OnBodySegmentImpactedByHeadEvent;
     }
 
     private void OnAppleEaten()
     {
         Debug.Log("**GameBoard saw apple eaten event**");
         SpawnApple();
-    }
-
-    private void OnDestroy()
-    {
-        // unsubscribe to Apple.eatenEvent
-        if (FindObjectOfType<Apple>() != null)
-        {
-            FindObjectOfType<Apple>().eatenEvent -= OnAppleEaten;
-        }
     }
 
     private void SpawnApple()
@@ -53,7 +45,6 @@ public class GameBoard : MonoBehaviour
             0.5f,
             Random.Range(planeMeshBounds.min.z, planeMeshBounds.max.z)
         );
-        Debug.Log($"Placing apple at {randomPosition}");
         if (appleInstance != null)
         {
             appleInstance.transform.position = randomPosition;
@@ -61,6 +52,38 @@ public class GameBoard : MonoBehaviour
         else
         {
             appleInstance = Instantiate(fruit, randomPosition, Quaternion.identity);
+        }
+    }
+
+    public void OnBodySegmentImpactedByHeadEvent(int segmentIndex)
+    {
+        if (segmentIndex == NECK_SEGMENT)
+        {
+            // @TODO hit neck, we are backing up, need to stop backward movement
+            Debug.Log($"**You hit the Neck segment at {segmentIndex}**");
+        }
+        else
+        {
+            Debug.Log($"**You died, you hit index at {segmentIndex}**");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        UnsuscribeEvents();
+    }
+
+    private void UnsuscribeEvents()
+    {
+        // unsubscribe from events
+        if (FindObjectOfType<Apple>() != null)
+        {
+            FindObjectOfType<Apple>().EatenEvent -= OnAppleEaten;
+        }
+
+        if (FindObjectOfType<SnakeBodySegment>() != null)
+        {
+            FindObjectOfType<SnakeBodySegment>().ImpactedByHeadEvent -= OnBodySegmentImpactedByHeadEvent;
         }
     }
 }

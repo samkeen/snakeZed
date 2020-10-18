@@ -9,9 +9,15 @@ using UnityEngine;
 /// </summary>
 public class SnakeBodySegment : MonoBehaviour
 {
+    /// <summary>
+    /// https://www.youtube.com/watch?v=TdiN18PR4zk
+    /// </summary>
+    public event Action<int> ImpactedByHeadEvent;
+
     public Transform FollowTarget { get; set; }
     public float SeparationDistance { get; set; }
     public float FollowSpeed { get; set; }
+    public int SegmentIndex { get; set; }
 
     private void Update()
     {
@@ -21,7 +27,15 @@ public class SnakeBodySegment : MonoBehaviour
         if (distanceToHead > SeparationDistance)
         {
             transform.Translate(Vector3.forward * FollowSpeed * Time.deltaTime);
-            // transform.Translate(0,0,FollowSpeed* Time.deltaTime);
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        // broadcast "Was Eaten"
+        if (other.gameObject.CompareTag("SnakeHead"))
+        {
+            ImpactedByHeadEvent?.Invoke(this.SegmentIndex);
         }
     }
 }

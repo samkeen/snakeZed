@@ -9,7 +9,12 @@ public class Snake : MonoBehaviour
     [SerializeField] private SnakeBodySegment snakeBodySegmentPrefab;
     [SerializeField] private float bodySegmentFollowSpeed = 50;
     [SerializeField] private float bodySegmentSeparation = 1.3f;
-    private Stack<SnakeBodySegment> bodySegments = new Stack<SnakeBodySegment>();
+    // @TODO code smell that snake has reference to gameboard.
+    //       needed in order to add an impact listener for new body segments to 
+    //       the gameboard.
+    [SerializeField] private GameBoard _gameBoard;
+    
+    private List<SnakeBodySegment> bodySegments = new List<SnakeBodySegment>();
 
     private void Awake()
     {
@@ -20,13 +25,12 @@ public class Snake : MonoBehaviour
     private void Start()
     {
         // subscribe to Apple.eatenEvent
-        FindObjectOfType<Apple>().eatenEvent += OnAppleEaten;
+        FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
     }
 
     private void OnAppleEaten()
     {
-        Debug.Log("**Snake saw apple eaten**");
-        SpawnBodySegment(bodySegments.Peek().transform);
+        SpawnBodySegment(bodySegments[bodySegments.Count - 1].transform);
     }
 
     private void SpawnBodySegment(Transform followTarget)
@@ -36,15 +40,17 @@ public class Snake : MonoBehaviour
             NewSegmentPosition(followTarget),
             Quaternion.identity
         );
-        SetSegmentState(followTarget, segment);
-        this.bodySegments.Push(segment);
+        this.bodySegments.Add(segment);
+        SetSegmentState(followTarget, segment, this.bodySegments.Count);
     }
 
-    private void SetSegmentState(Transform followTarget, SnakeBodySegment segment)
+    private void SetSegmentState(Transform followTarget, SnakeBodySegment segment, int position)
     {
         segment.FollowTarget = followTarget;
         segment.FollowSpeed = this.bodySegmentFollowSpeed;
         segment.SeparationDistance = this.bodySegmentSeparation;
+        segment.SegmentIndex = position;
+        segment.ImpactedByHeadEvent += _gameBoard.OnBodySegmentImpactedByHeadEvent;
     }
 
     private Vector3 NewSegmentPosition(Transform followTarget)
@@ -59,7 +65,7 @@ public class Snake : MonoBehaviour
         // unsubscribe to Apple.eatenEvent
         if (FindObjectOfType<Apple>() != null)
         {
-            FindObjectOfType<Apple>().eatenEvent -= OnAppleEaten;
+            FindObjectOfType<Apple>().EatenEvent -= OnAppleEaten;
         }
     }
 }

@@ -6,24 +6,17 @@ using UnityEngine;
 public class Apple : MonoBehaviour
 {
     /// <summary>
-    /// https://www.youtube.com/watch?v=TdiN18PR4zk&feature=youtu.be
+    /// https://www.youtube.com/watch?v=TdiN18PR4zk
     /// </summary>
-    public delegate void EatenDelegate();
-    public event EatenDelegate eatenEvent;
-    
-    private void OnEaten()
-    {
-        // broadcast onEaten event
-        eatenEvent?.Invoke();
-    }
+    public event Action EatenEvent;
 
     private void OnTriggerEnter(Collider other)
     {
         // broadcast "Was Eaten"
-        Debug.Log($"Trigger - Other: {other.name}");
         if (other.CompareTag("SnakeHead"))
         {
-            OnEaten();
+            // broadcast onEaten event
+            EatenEvent?.Invoke();
         }
     }
 }
