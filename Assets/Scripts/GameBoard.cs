@@ -34,7 +34,7 @@ public class GameBoard : MonoBehaviour
         SpawnApple();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         // unsubscribe to Apple.eatenEvent
         if (FindObjectOfType<Apple>() != null)
@@ -47,6 +47,7 @@ public class GameBoard : MonoBehaviour
     {
         // @TODO ensure the random position is not the snakehead position
         // https://app.clickup.com/t/e0rthb
+        // random position within the bounds of the board
         var randomPosition = new Vector3(
             Random.Range(planeMeshBounds.min.x, planeMeshBounds.max.x),
             0.5f,

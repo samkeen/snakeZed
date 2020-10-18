@@ -295,7 +295,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
@@ -360,6 +360,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241437968}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1283893797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1283893798}
+  - component: {fileID: 1283893799}
+  m_Layer: 0
+  m_Name: Snake
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1283893798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283893797}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2067569228}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1283893799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283893797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0251ed91362c43a0a32ae0de6f94850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snakeHead: {fileID: 1241437969}
+  snakeBodySegmentPrefab: {fileID: 3634134317163623004, guid: 8cacf276b22854f0780bbf8602afa1ba,
+    type: 3}
+  bodySegmentFollowSpeed: 17
+  bodySegmentSeparation: 1.3
 --- !u!1 &1338460535
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,6 +624,7 @@ Transform:
   m_Children:
   - {fileID: 1804489768}
   - {fileID: 1241437969}
+  - {fileID: 1283893798}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -594,5 +643,3 @@ MonoBehaviour:
   plane: {fileID: 1804489768}
   snakeHead: {fileID: 1241437969}
   fruit: {fileID: 4110854496280780971, guid: dfd73de5755dc436db2afc9f3e9b4e3b, type: 3}
-  bodySegment: {fileID: 6289873057610879966, guid: 8cacf276b22854f0780bbf8602afa1ba,
-    type: 3}

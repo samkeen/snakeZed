@@ -31,19 +31,30 @@ public class Snake : MonoBehaviour
 
     private void SpawnBodySegment(Transform followTarget)
     {
-        var bodySegmentPosition = new Vector3(
-            followTarget.position.x,
-            0.5f,
-            followTarget.position.z
+        var segment = Instantiate(
+            snakeBodySegmentPrefab,
+            NewSegmentPosition(followTarget),
+            Quaternion.identity
         );
-        var segment = Instantiate(snakeBodySegmentPrefab, bodySegmentPosition, Quaternion.identity);
+        SetSegmentState(followTarget, segment);
+        this.bodySegments.Push(segment);
+    }
+
+    private void SetSegmentState(Transform followTarget, SnakeBodySegment segment)
+    {
         segment.FollowTarget = followTarget;
         segment.FollowSpeed = this.bodySegmentFollowSpeed;
         segment.SeparationDistance = this.bodySegmentSeparation;
-        this.bodySegments.Push(segment);
     }
-    
-    private void OnDisable()
+
+    private Vector3 NewSegmentPosition(Transform followTarget)
+    {
+        var newSegmentPosition = followTarget.position;
+        var spacing = followTarget.GetComponent<MeshFilter>().mesh.bounds.size.z + this.bodySegmentSeparation;
+        return newSegmentPosition - followTarget.forward * spacing;
+    }
+
+    private void OnDestroy()
     {
         // unsubscribe to Apple.eatenEvent
         if (FindObjectOfType<Apple>() != null)
