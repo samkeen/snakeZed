@@ -60,6 +60,11 @@ public class GameBoard : MonoBehaviour
         if (segmentIndex == NECK_SEGMENT)
         {
             // @TODO hit neck, we are backing up, need to stop backward movement
+            //       Or, allow slight reversing, count on eventual impact with 
+            //       segments other than neck to end game.  Noticed if we make neck drag 
+            //       0, it quickly moves aside and you hit a game ending segment.
+            //       Wait, we need constant, automated fwd movement then collect only
+            //       (GetAxis horizontal).  SOLVED!!!
             Debug.Log($"**You hit the Neck segment at {segmentIndex}**");
         }
         else

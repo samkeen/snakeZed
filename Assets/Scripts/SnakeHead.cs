@@ -9,8 +9,8 @@ public class SnakeHead : MonoBehaviour
 
     void Update()
     {
-        var x = Input.GetAxis("Horizontal");
-        var z = Input.GetAxis("Vertical");
+        var x = Input.GetAxisRaw("Horizontal");
+        var z = Input.GetAxisRaw("Vertical");
         Vector3 move = new Vector3(x, 0, z);
         transform.Translate(move * Time.deltaTime * snakeSpeed);
     }
