@@ -15,7 +15,7 @@ public class GameBoard : MonoBehaviour
 
     private GameObject appleInstance;
     private Bounds planeMeshBounds;
-    private const int NECK_SEGMENT = 1;
+    private const int NeckSegment = 1;
 
 
     // Start is called before the first frame update
@@ -26,7 +26,7 @@ public class GameBoard : MonoBehaviour
         // subscribe to Apple.eatenEvent
         FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
         // subscribe to SnakeBodySegment.ImpactedEvent
-        FindObjectOfType<SnakeBodySegment>().ImpactedByHeadEvent += OnBodySegmentImpactedByHeadEvent;
+        FindObjectOfType<SnakeHead>().HeadHitBodySegemntEvent += OnBodySegmentImpactedByHeadEvent;
     }
 
     private void OnAppleEaten()
@@ -57,7 +57,7 @@ public class GameBoard : MonoBehaviour
 
     public void OnBodySegmentImpactedByHeadEvent(int segmentIndex)
     {
-        if (segmentIndex == NECK_SEGMENT)
+        if (segmentIndex == NeckSegment)
         {
             // @TODO hit neck, we are backing up, need to stop backward movement
             //       Or, allow slight reversing, count on eventual impact with 
@@ -85,10 +85,9 @@ public class GameBoard : MonoBehaviour
         {
             FindObjectOfType<Apple>().EatenEvent -= OnAppleEaten;
         }
-
-        if (FindObjectOfType<SnakeBodySegment>() != null)
+        if (FindObjectOfType<SnakeHead>() != null)
         {
-            FindObjectOfType<SnakeBodySegment>().ImpactedByHeadEvent -= OnBodySegmentImpactedByHeadEvent;
+            FindObjectOfType<SnakeHead>().HeadHitBodySegemntEvent -= OnBodySegmentImpactedByHeadEvent;
         }
     }
 }

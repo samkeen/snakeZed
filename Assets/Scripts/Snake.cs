@@ -9,11 +9,7 @@ public class Snake : MonoBehaviour
     [SerializeField] private SnakeBodySegment snakeBodySegmentPrefab;
     [SerializeField] private float bodySegmentFollowSpeed = 50;
     [SerializeField] private float bodySegmentSeparation = 1.3f;
-    // @TODO code smell that snake has reference to gameboard.
-    //       needed in order to add an impact listener for new body segments to 
-    //       the gameboard.
-    [SerializeField] private GameBoard _gameBoard;
-    
+
     private List<SnakeBodySegment> bodySegments = new List<SnakeBodySegment>();
 
     private void Awake()
@@ -46,11 +42,11 @@ public class Snake : MonoBehaviour
 
     private void SetSegmentState(Transform followTarget, SnakeBodySegment segment, int position)
     {
+        segment.name = $"BodySegment-{position}"; // segment id parsed by those impacting it (SnakeHead)
         segment.FollowTarget = followTarget;
         segment.FollowSpeed = this.bodySegmentFollowSpeed;
         segment.SeparationDistance = this.bodySegmentSeparation;
         segment.SegmentIndex = position;
-        segment.ImpactedByHeadEvent += _gameBoard.OnBodySegmentImpactedByHeadEvent;
     }
 
     private Vector3 NewSegmentPosition(Transform followTarget)

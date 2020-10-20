@@ -6,7 +6,7 @@ using UnityEngine;
 public class Apple : MonoBehaviour
 {
     /// <summary>
-    /// https://www.youtube.com/watch?v=TdiN18PR4zk
+    /// If eaten by snake, broadcasts event
     /// </summary>
     public event Action EatenEvent;
 
