@@ -14,14 +14,10 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private GameObject fruit;
 
     private GameObject appleInstance;
-    private Bounds planeMeshBounds;
     private const int NeckSegment = 1;
 
-
-    // Start is called before the first frame update
     void Awake()
     {
-        planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
         SpawnApple();
         // subscribe to Apple.eatenEvent
         FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
@@ -40,11 +36,7 @@ public class GameBoard : MonoBehaviour
         // @TODO ensure the random position is not the snakehead position
         // https://app.clickup.com/t/e0rthb
         // random position within the bounds of the board
-        var randomPosition = new Vector3(
-            Random.Range(planeMeshBounds.min.x, planeMeshBounds.max.x),
-            0.5f,
-            Random.Range(planeMeshBounds.min.z, planeMeshBounds.max.z)
-        );
+        var randomPosition = RandomPositionWithinBoard();
         if (appleInstance != null)
         {
             appleInstance.transform.position = randomPosition;
@@ -53,6 +45,19 @@ public class GameBoard : MonoBehaviour
         {
             appleInstance = Instantiate(fruit, randomPosition, Quaternion.identity);
         }
+    }
+
+    private Vector3 RandomPositionWithinBoard()
+    {
+        var planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
+        var scaleX = plane.localScale.x;
+        var scaleZ = plane.localScale.z;
+        var randomPosition = new Vector3(
+            Random.Range(planeMeshBounds.min.x * scaleX, planeMeshBounds.max.x * scaleX),
+            0.5f,
+            Random.Range(planeMeshBounds.min.z * scaleZ, planeMeshBounds.max.z * scaleZ)
+        );
+        return randomPosition;
     }
 
     public void OnBodySegmentImpactedByHeadEvent(int segmentIndex)
