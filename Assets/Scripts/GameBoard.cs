@@ -14,6 +14,12 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private Transform plane;
     [SerializeField] private GameObject fruit;
 
+    /// <summary>
+    /// Distance from wall where apples will not spawn
+    /// </summary>
+    [SerializeField] private float appleSpawnWallBuffer = 1;
+
+
     private GameObject appleInstance;
     private const int NeckSegment = 1;
 
@@ -24,6 +30,12 @@ public class GameBoard : MonoBehaviour
         FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
         // subscribe to SnakeBodySegment.ImpactedEvent
         FindObjectOfType<SnakeHead>().HeadHitBodySegemntEvent += OnBodySegmentImpactedByHeadEvent;
+        FindObjectOfType<SnakeHead>().HeadHitWallEvent += OnWallImpactedByHeadEvent;
+    }
+
+    private void OnWallImpactedByHeadEvent(string wallIndex)
+    {
+        Debug.Log($"THe HEAD HIT WALL {wallIndex}");
     }
 
     private void OnAppleEaten()
@@ -53,11 +65,11 @@ public class GameBoard : MonoBehaviour
         var planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
         var scaleX = plane.localScale.x;
         var scaleZ = plane.localScale.z;
-        var randomPosition = new Vector3(
-            Random.Range(planeMeshBounds.min.x * scaleX, planeMeshBounds.max.x * scaleX),
-            0.5f,
-            Random.Range(planeMeshBounds.min.z * scaleZ, planeMeshBounds.max.z * scaleZ)
-        );
+        var minX = planeMeshBounds.min.x * scaleX + appleSpawnWallBuffer;
+        var maxX = planeMeshBounds.max.x * scaleX - appleSpawnWallBuffer;
+        var minZ = planeMeshBounds.min.z * scaleZ + appleSpawnWallBuffer;
+        var maxZ = planeMeshBounds.max.z * scaleZ - appleSpawnWallBuffer;
+        var randomPosition = new Vector3(Random.Range(minX, maxX), 0.5f, Random.Range(minZ, maxZ));
         return randomPosition;
     }
 
@@ -91,6 +103,7 @@ public class GameBoard : MonoBehaviour
         {
             FindObjectOfType<Apple>().EatenEvent -= OnAppleEaten;
         }
+
         if (FindObjectOfType<SnakeHead>() != null)
         {
             FindObjectOfType<SnakeHead>().HeadHitBodySegemntEvent -= OnBodySegmentImpactedByHeadEvent;

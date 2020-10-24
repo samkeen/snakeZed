@@ -6,6 +6,7 @@ using UnityEngine;
 public class SnakeHead : MonoBehaviour
 {
     public event Action<int> HeadHitBodySegemntEvent;
+    public event Action<string> HeadHitWallEvent;
     
     [SerializeField] private float rotationSpeed = 500;
     [SerializeField] private float moveSpeed = 20;
@@ -39,6 +40,22 @@ public class SnakeHead : MonoBehaviour
                 HeadHitBodySegemntEvent?.Invoke(segmentIndex);
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (HitWall(other))
+        {
+            var wall = other.GetComponent<Wall>();
+            HeadHitWallEvent?.Invoke(wall.index);
+        }
+    }
+
+
+
+    private bool HitWall(Collider other)
+    {
+        return other.gameObject.CompareTag("Wall");
     }
 
     private bool HitSnakeBody(Collision other)
