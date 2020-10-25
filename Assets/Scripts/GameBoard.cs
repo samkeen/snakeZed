@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -17,7 +18,7 @@ public class GameBoard : MonoBehaviour
     /// <summary>
     /// Distance from wall where apples will not spawn
     /// </summary>
-    [SerializeField] private float appleSpawnWallBuffer = 1;
+    [SerializeField] private float appleSpawnWallBuffer = 2;
 
 
     private GameObject appleInstance;
@@ -26,9 +27,12 @@ public class GameBoard : MonoBehaviour
     void Awake()
     {
         SpawnApple();
-        // subscribe to Apple.eatenEvent
+        SubscribeToEvents();
+    }
+
+    private void SubscribeToEvents()
+    {
         FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
-        // subscribe to SnakeBodySegment.ImpactedEvent
         FindObjectOfType<SnakeHead>().HeadHitBodySegemntEvent += OnBodySegmentImpactedByHeadEvent;
         FindObjectOfType<SnakeHead>().HeadHitWallEvent += OnWallImpactedByHeadEvent;
     }
@@ -36,6 +40,7 @@ public class GameBoard : MonoBehaviour
     private void OnWallImpactedByHeadEvent(string wallIndex)
     {
         Debug.Log($"THe HEAD HIT WALL {wallIndex}");
+        GameOver();
     }
 
     private void OnAppleEaten()
@@ -88,7 +93,14 @@ public class GameBoard : MonoBehaviour
         else
         {
             Debug.Log($"**You died, you hit index at {segmentIndex}**");
+            GameOver();
         }
+    }
+
+    private void GameOver()
+    {
+        Debug.Log($"@@@ GAME OVER @@@");
+        SceneManager.LoadScene("Scenes/End Game");
     }
 
     private void OnDestroy()
