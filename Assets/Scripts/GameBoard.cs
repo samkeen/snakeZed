@@ -46,6 +46,7 @@ public class GameBoard : MonoBehaviour
     private void OnAppleEaten()
     {
         Debug.Log("**GameBoard saw apple eaten event**");
+        FindObjectOfType<AudioManager>().Play("Eat Apple");
         SpawnApple();
     }
 
