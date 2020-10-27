@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 /// <summary>
 /// Found this concept in a Brackeys tutorial.  It is a Singleton but
 /// it really helps to organize
@@ -14,7 +16,11 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [SerializeField] private Sound[] sounds;
-    // Start is called before the first frame update
+    [SerializeField] private SceneMusic[] sceneMusicMap;
+
+    private string musicCurrentlyPlaying;
+
+    
     void Awake()
     {
         // @TODO is there a better singleton pattern???
@@ -38,21 +44,57 @@ public class AudioManager : MonoBehaviour
             sound.source.loop = sound.loop;
         }
     }
-
-    private void Start()
+    
+    void OnEnable()
     {
-        // Play("Theme Music");
+        Debug.Log("OnEnable called");
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    // Update is called once per frame
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("OnSceneLoaded: " + scene.name);
+        var targetSceneMusic = Array.Find(sceneMusicMap, sceneMusic => sceneMusic.sceneName == scene.name);
+        if (targetSceneMusic == null)
+        {
+            Debug.Log($"No scene music found for scene {scene.name}");
+            return;
+        }
+        // only stop/play if requested music is not already playing
+        if (targetSceneMusic.soundName != musicCurrentlyPlaying)
+        {
+            StopPlay(musicCurrentlyPlaying);
+            Play(targetSceneMusic.soundName);
+        }
+
+        musicCurrentlyPlaying = targetSceneMusic.soundName;
+    }
+
+    private void StopPlay(string soundName)
+    {
+        var targetSound = GetTargetSound(soundName);
+        if (targetSound == null)
+        {
+            Debug.Log($"Asked to stop unknown sound: {soundName}");
+            return;
+        }
+        targetSound.source.Stop();
+    }
+
     public void Play(string soundName)
     {
-        var targetSound = Array.Find(sounds, sound => sound.name == soundName);
+        var targetSound = GetTargetSound(soundName);
         if (targetSound == null)
         {
             Debug.Log($"We did not find sound: {soundName}");
             return;
         }
         targetSound.source.Play();
+    }
+
+    private Sound GetTargetSound(string soundName)
+    {
+        var targetSound = Array.Find(sounds, sound => sound.name == soundName);
+        return targetSound;
     }
 }

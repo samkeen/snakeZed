@@ -50,3 +50,20 @@ MonoBehaviour:
     pitch: 1.7
     loop: 0
     source: {fileID: 0}
+  - name: Menu music
+    clip: {fileID: 8300000, guid: bf5a460f6e0ba43da9957701414c7827, type: 3}
+    volume: 0.729
+    pitch: 1.7
+    loop: 1
+    source: {fileID: 0}
+  - name: Game Music
+    clip: {fileID: 8300000, guid: 3f4da7fa6e60a4e6cb1b34ce73f60028, type: 3}
+    volume: 0.729
+    pitch: 1.7
+    loop: 1
+    source: {fileID: 0}
+  sceneMusicMap:
+  - sceneName: Start Game
+    soundName: Menu music
+  - sceneName: Snake
+    soundName: Game Music

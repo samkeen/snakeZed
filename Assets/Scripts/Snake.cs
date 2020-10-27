@@ -56,7 +56,7 @@ public class Snake : MonoBehaviour
         return newSegmentPosition - followTarget.forward * spacing;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         // unsubscribe to Apple.eatenEvent
         if (FindObjectOfType<Apple>() != null)

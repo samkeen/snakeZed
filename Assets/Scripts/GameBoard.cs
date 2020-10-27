@@ -104,7 +104,7 @@ public class GameBoard : MonoBehaviour
         SceneManager.LoadScene("Scenes/End Game");
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         UnsuscribeEvents();
     }
