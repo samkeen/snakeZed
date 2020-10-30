@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snakeHead: {fileID: 1241437969}
-  snakeBodySegmentPrefab: {fileID: 3634134317163623004, guid: 8cacf276b22854f0780bbf8602afa1ba,
+  snakeBodySegmentPrefab: {fileID: -3593099590614163314, guid: b0ca150c5a55f454eb3368260c2a2195,
     type: 3}
   bodySegmentFollowSpeed: 17
   bodySegmentSeparation: 1.3
