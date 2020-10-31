@@ -11,7 +11,12 @@ public class SnakeHead : MonoBehaviour
     [SerializeField] private float rotationSpeed = 500;
     [SerializeField] private float moveSpeed = 20;
 
-    float z;
+    private bool isFrozen;
+    public bool IsFrozen
+    {
+        set => isFrozen = value;
+    }
+
     void Update()
     {
         Rotate();
@@ -20,8 +25,11 @@ public class SnakeHead : MonoBehaviour
 
     private void Move()
     {
-        var movement = new Vector3(0.0f, 0.0f, 1);
-        transform.Translate(movement * moveSpeed * Time.deltaTime);
+        if (! isFrozen)
+        {
+            var movement = new Vector3(0.0f, 0.0f, 1);
+            transform.Translate(movement * moveSpeed * Time.deltaTime);
+        }
     }
 
     private void Rotate()

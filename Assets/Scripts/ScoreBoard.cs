@@ -7,17 +7,24 @@ using UnityEngine;
 public class ScoreBoard : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI introScreen;
     [SerializeField] private int pointsForEatenApple = 10;
-    
-
+    [SerializeField] private float introTimeInSeconds = 4;
 
     private void Start()
     {
         scoreText.text = "0";
-        // subscribe to Apple.eatenEvent
         FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
+        // freeze until start UI button calls this.StartGame()
+        FindObjectOfType<SnakeHead>().IsFrozen = true;
     }
-    
+
+    public void StartGame()
+    {
+        introScreen.enabled = false;
+        FindObjectOfType<SnakeHead>().IsFrozen = false;
+    }
+
     private void OnAppleEaten()
     {
         Debug.Log("**ScoreBoard saw apple eaten event**");
