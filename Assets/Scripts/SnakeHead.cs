@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SnakeHead : MonoBehaviour
 {
-    public event Action<int> HeadHitBodySegemntEvent;
+    public event Action<int> HeadHitBodySegmentEvent;
     public event Action<string> HeadHitWallEvent;
     
     [SerializeField] private float rotationSpeed = 500;
@@ -45,23 +45,17 @@ public class SnakeHead : MonoBehaviour
             var segmentIndex = ParseSegmentIndex(other);
             if (segmentIndex > 1) // ignore hitting segment 1 (neck)
             {
-                HeadHitBodySegemntEvent?.Invoke(segmentIndex);
+                HeadHitBodySegmentEvent?.Invoke(segmentIndex);
             }
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
         if (HitWall(other))
         {
-            var wall = other.GetComponent<Wall>();
+            var wall = other.gameObject.GetComponent<Wall>();
             HeadHitWallEvent?.Invoke(wall.index);
         }
     }
-
-
-
-    private bool HitWall(Collider other)
+    
+    private bool HitWall(Collision other)
     {
         return other.gameObject.CompareTag("Wall");
     }

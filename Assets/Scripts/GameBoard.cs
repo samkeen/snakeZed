@@ -33,7 +33,7 @@ public class GameBoard : MonoBehaviour
     private void SubscribeToEvents()
     {
         FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
-        FindObjectOfType<SnakeHead>().HeadHitBodySegemntEvent += OnBodySegmentImpactedByHeadEvent;
+        FindObjectOfType<SnakeHead>().HeadHitBodySegmentEvent += OnBodySegmentImpactedByHeadEvent;
         FindObjectOfType<SnakeHead>().HeadHitWallEvent += OnWallImpactedByHeadEvent;
     }
 
@@ -101,6 +101,15 @@ public class GameBoard : MonoBehaviour
     private void GameOver()
     {
         Debug.Log($"@@@ GAME OVER @@@");
+        var snakeHead = FindObjectOfType<SnakeHead>();
+        snakeHead.IsFrozen = true;
+        snakeHead.GetComponentInChildren<ParticleSystem>().Play();
+        StartCoroutine(LoadLevelAfterDelay(5f));
+    }
+    
+    IEnumerator LoadLevelAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         SceneManager.LoadScene("Scenes/End Game");
     }
 
@@ -119,7 +128,7 @@ public class GameBoard : MonoBehaviour
 
         if (FindObjectOfType<SnakeHead>() != null)
         {
-            FindObjectOfType<SnakeHead>().HeadHitBodySegemntEvent -= OnBodySegmentImpactedByHeadEvent;
+            FindObjectOfType<SnakeHead>().HeadHitBodySegmentEvent -= OnBodySegmentImpactedByHeadEvent;
         }
     }
 }
