@@ -104,6 +104,7 @@ public class GameBoard : MonoBehaviour
         var snakeHead = FindObjectOfType<SnakeHead>();
         snakeHead.IsFrozen = true;
         snakeHead.GetComponentInChildren<ParticleSystem>().Play();
+        AudioManager.instance.Play("Death explosion");
         StartCoroutine(LoadLevelAfterDelay(5f));
     }
     
