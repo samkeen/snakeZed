@@ -705,9 +705,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'My First Game
+  m_text: 'Sam Keen''s First Game
 
-    The "Hello World!" of game dev; Snake'
+    Starting with the basics'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
@@ -2780,7 +2780,7 @@ PrefabInstance:
     - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
         type: 3}
       propertyPath: sounds.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
         type: 3}
@@ -2795,13 +2795,13 @@ PrefabInstance:
     - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
         type: 3}
       propertyPath: sounds.Array.data[3].name
-      value: Game Music
+      value: Death explosion
       objectReference: {fileID: 0}
     - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
         type: 3}
       propertyPath: sounds.Array.data[3].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 3f4da7fa6e60a4e6cb1b34ce73f60028, type: 3}
+      objectReference: {fileID: 8300000, guid: 660511fb1a3fa45b2afcd7b2c19e8fe2, type: 3}
     - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
         type: 3}
       propertyPath: sounds.Array.data[3].volume
@@ -2841,6 +2841,16 @@ PrefabInstance:
         type: 3}
       propertyPath: sceneMusic.Array.data[1].soundName
       value: Game Music
+      objectReference: {fileID: 0}
+    - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
+        type: 3}
+      propertyPath: sounds.Array.data[3].loop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
+        type: 3}
+      propertyPath: sounds.Array.data[1].name
+      value: Menu Music
       objectReference: {fileID: 0}
     - target: {fileID: 5501616911239711587, guid: 69db2c7231d514ebb928b13cd89a458d,
         type: 3}

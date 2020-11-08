@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using EZCameraShake;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,7 +15,8 @@ public class GameBoard : MonoBehaviour
 {
     [SerializeField] private Transform plane;
     [SerializeField] private GameObject fruit;
-
+    [SerializeField] private float deathMomentPause = 4f;
+    
     /// <summary>
     /// Distance from wall where apples will not spawn
     /// </summary>
@@ -47,6 +49,7 @@ public class GameBoard : MonoBehaviour
     {
         Debug.Log("**GameBoard saw apple eaten event**");
         FindObjectOfType<AudioManager>().Play("Eat Apple");
+        CameraShaker.Instance.ShakeOnce(1, 5, .1f, .5f);
         SpawnApple();
     }
 
@@ -101,11 +104,13 @@ public class GameBoard : MonoBehaviour
     private void GameOver()
     {
         Debug.Log($"@@@ GAME OVER @@@");
+        CameraShaker.Instance.ShakeOnce(6f, 6f, .1f, 2f);
         var snakeHead = FindObjectOfType<SnakeHead>();
         snakeHead.IsFrozen = true;
         snakeHead.GetComponentInChildren<ParticleSystem>().Play();
+        AudioManager.instance.StopPlay("Game Music");
         AudioManager.instance.Play("Death explosion");
-        StartCoroutine(LoadLevelAfterDelay(5f));
+        StartCoroutine(LoadLevelAfterDelay(deathMomentPause));
     }
     
     IEnumerator LoadLevelAfterDelay(float delay)
@@ -116,10 +121,10 @@ public class GameBoard : MonoBehaviour
 
     private void OnDisable()
     {
-        UnsuscribeEvents();
+        UnsubscribeEvents();
     }
 
-    private void UnsuscribeEvents()
+    private void UnsubscribeEvents()
     {
         // unsubscribe from events
         if (FindObjectOfType<Apple>() != null)

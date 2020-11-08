@@ -16,10 +16,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [SerializeField] private Sound[] sounds;
-    [SerializeField] private SceneMusic[] sceneMusicMap;
-
-    private string musicCurrentlyPlaying;
-
+    
     
     void Awake()
     {
@@ -48,29 +45,10 @@ public class AudioManager : MonoBehaviour
     void OnEnable()
     {
         Debug.Log("OnEnable called");
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        Play("Menu Music");
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log("OnSceneLoaded: " + scene.name);
-        var targetSceneMusic = Array.Find(sceneMusicMap, sceneMusic => sceneMusic.sceneName == scene.name);
-        if (targetSceneMusic == null)
-        {
-            Debug.Log($"No scene music found for scene {scene.name}");
-            return;
-        }
-        // only stop/play if requested music is not already playing
-        if (targetSceneMusic.soundName != musicCurrentlyPlaying)
-        {
-            StopPlay(musicCurrentlyPlaying);
-            Play(targetSceneMusic.soundName);
-        }
-
-        musicCurrentlyPlaying = targetSceneMusic.soundName;
-    }
-
-    private void StopPlay(string soundName)
+    public void StopPlay(string soundName)
     {
         var targetSound = GetTargetSound(soundName);
         if (targetSound == null)

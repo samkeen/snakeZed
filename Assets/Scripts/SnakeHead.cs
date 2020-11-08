@@ -7,11 +7,12 @@ public class SnakeHead : MonoBehaviour
 {
     public event Action<int> HeadHitBodySegmentEvent;
     public event Action<string> HeadHitWallEvent;
-    
+
     [SerializeField] private float rotationSpeed = 500;
     [SerializeField] private float moveSpeed = 20;
 
     private bool isFrozen;
+
     public bool IsFrozen
     {
         set => isFrozen = value;
@@ -19,17 +20,17 @@ public class SnakeHead : MonoBehaviour
 
     void Update()
     {
-        Rotate();
-        Move();
+        if (!isFrozen)
+        {
+            Rotate();
+            Move();
+        }
     }
 
     private void Move()
     {
-        if (! isFrozen)
-        {
-            var movement = new Vector3(0.0f, 0.0f, 1);
-            transform.Translate(movement * moveSpeed * Time.deltaTime);
-        }
+        var movement = new Vector3(0.0f, 0.0f, 1);
+        transform.Translate(movement * moveSpeed * Time.deltaTime);
     }
 
     private void Rotate()
@@ -48,13 +49,14 @@ public class SnakeHead : MonoBehaviour
                 HeadHitBodySegmentEvent?.Invoke(segmentIndex);
             }
         }
+
         if (HitWall(other))
         {
             var wall = other.gameObject.GetComponent<Wall>();
             HeadHitWallEvent?.Invoke(wall.index);
         }
     }
-    
+
     private bool HitWall(Collision other)
     {
         return other.gameObject.CompareTag("Wall");

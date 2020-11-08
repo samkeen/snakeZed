@@ -20,7 +20,7 @@ public class SnakeBodySegment : MonoBehaviour
     private void Update()
     {
         // Face the follow target and pursue
-        transform.LookAt(FollowTarget.position);
+        transform.LookAt(FollowTarget.position, Vector3.forward);
         var distanceToHead = (transform.position - FollowTarget.position).magnitude;
         if (distanceToHead > SeparationDistance)
         {

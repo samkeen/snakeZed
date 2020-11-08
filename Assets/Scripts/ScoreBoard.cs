@@ -22,6 +22,8 @@ public class ScoreBoard : MonoBehaviour
     public void StartGame()
     {
         introScreen.enabled = false;
+        AudioManager.instance.StopPlay("Menu Music");
+        AudioManager.instance.Play("Game Music");
         FindObjectOfType<SnakeHead>().IsFrozen = false;
     }
 
