@@ -117,6 +117,7 @@ public class GameBoard : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene("Scenes/End Game");
+        AudioManager.instance.Play("Menu Music");
     }
 
     private void OnDisable()
