@@ -31,6 +31,7 @@ public class ScoreBoard : MonoBehaviour
     {
         Debug.Log("**ScoreBoard saw apple eaten event**");
         var score = Int32.Parse(scoreText.text);
+        PlayerStats.Points += pointsForEatenApple;
         score += pointsForEatenApple;
         scoreText.text = score.ToString();
     }
