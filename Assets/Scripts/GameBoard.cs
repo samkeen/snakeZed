@@ -18,23 +18,23 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private float deathMomentPause = 4f;
     
     /// <summary>
-    /// Distance from wall where apples will not spawn
+    /// Distance from wall where food will not spawn
     /// </summary>
-    [SerializeField] private float appleSpawnWallBuffer = 2;
+    [SerializeField] private float foodSpawnWallBuffer = 2;
 
 
-    private GameObject appleInstance;
+    private GameObject foodInstance;
     private const int NeckSegment = 1;
 
     void Awake()
     {
-        SpawnApple();
+        SpawnFood();
         SubscribeToEvents();
     }
 
     private void SubscribeToEvents()
     {
-        FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
+        FindObjectOfType<Food>().EatenEvent += OnFoodEaten;
         FindObjectOfType<SnakeHead>().HeadHitBodySegmentEvent += OnBodySegmentImpactedByHeadEvent;
         FindObjectOfType<SnakeHead>().HeadHitWallEvent += OnWallImpactedByHeadEvent;
     }
@@ -45,27 +45,27 @@ public class GameBoard : MonoBehaviour
         GameOver();
     }
 
-    private void OnAppleEaten()
+    private void OnFoodEaten()
     {
-        Debug.Log("**GameBoard saw apple eaten event**");
-        FindObjectOfType<AudioManager>().Play("Eat Apple");
+        Debug.Log("**GameBoard saw food eaten event**");
+        FindObjectOfType<AudioManager>().Play("Eat Food");
         CameraShaker.Instance.ShakeOnce(1, 5, .1f, .5f);
-        SpawnApple();
+        SpawnFood();
     }
 
-    private void SpawnApple()
+    private void SpawnFood()
     {
         // @TODO ensure the random position is not the snakehead position
         // https://app.clickup.com/t/e0rthb
         // random position within the bounds of the board
         var randomPosition = RandomPositionWithinBoard();
-        if (appleInstance != null)
+        if (foodInstance != null)
         {
-            appleInstance.transform.position = randomPosition;
+            foodInstance.transform.position = randomPosition;
         }
         else
         {
-            appleInstance = Instantiate(fruit, randomPosition, Quaternion.identity);
+            foodInstance = Instantiate(fruit, randomPosition, Quaternion.identity);
         }
     }
 
@@ -74,10 +74,10 @@ public class GameBoard : MonoBehaviour
         var planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
         var scaleX = plane.localScale.x;
         var scaleZ = plane.localScale.z;
-        var minX = planeMeshBounds.min.x * scaleX + appleSpawnWallBuffer;
-        var maxX = planeMeshBounds.max.x * scaleX - appleSpawnWallBuffer;
-        var minZ = planeMeshBounds.min.z * scaleZ + appleSpawnWallBuffer;
-        var maxZ = planeMeshBounds.max.z * scaleZ - appleSpawnWallBuffer;
+        var minX = planeMeshBounds.min.x * scaleX + foodSpawnWallBuffer;
+        var maxX = planeMeshBounds.max.x * scaleX - foodSpawnWallBuffer;
+        var minZ = planeMeshBounds.min.z * scaleZ + foodSpawnWallBuffer;
+        var maxZ = planeMeshBounds.max.z * scaleZ - foodSpawnWallBuffer;
         var randomPosition = new Vector3(Random.Range(minX, maxX), 0.5f, Random.Range(minZ, maxZ));
         return randomPosition;
     }
@@ -128,9 +128,9 @@ public class GameBoard : MonoBehaviour
     private void UnsubscribeEvents()
     {
         // unsubscribe from events
-        if (FindObjectOfType<Apple>() != null)
+        if (FindObjectOfType<Food>() != null)
         {
-            FindObjectOfType<Apple>().EatenEvent -= OnAppleEaten;
+            FindObjectOfType<Food>().EatenEvent -= OnFoodEaten;
         }
 
         if (FindObjectOfType<SnakeHead>() != null)

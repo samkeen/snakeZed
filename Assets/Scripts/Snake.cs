@@ -20,11 +20,11 @@ public class Snake : MonoBehaviour
 
     private void Start()
     {
-        // subscribe to Apple.eatenEvent
-        FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
+        // subscribe to Food.eatenEvent
+        FindObjectOfType<Food>().EatenEvent += OnFoodEaten;
     }
 
-    private void OnAppleEaten()
+    private void OnFoodEaten()
     {
         SpawnBodySegment(bodySegments[bodySegments.Count - 1].transform);
     }
@@ -58,10 +58,10 @@ public class Snake : MonoBehaviour
 
     private void OnDisable()
     {
-        // unsubscribe to Apple.eatenEvent
-        if (FindObjectOfType<Apple>() != null)
+        // unsubscribe to Food.eatenEvent
+        if (FindObjectOfType<Food>() != null)
         {
-            FindObjectOfType<Apple>().EatenEvent -= OnAppleEaten;
+            FindObjectOfType<Food>().EatenEvent -= OnFoodEaten;
         }
     }
 }

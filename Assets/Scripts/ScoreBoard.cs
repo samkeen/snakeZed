@@ -8,13 +8,13 @@ public class ScoreBoard : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI introScreen;
-    [SerializeField] private int pointsForEatenApple = 10;
+    [SerializeField] private int pointsForEatenFood = 10;
     [SerializeField] private float introTimeInSeconds = 4;
 
     private void Start()
     {
         scoreText.text = "0";
-        FindObjectOfType<Apple>().EatenEvent += OnAppleEaten;
+        FindObjectOfType<Food>().EatenEvent += OnFoodEaten;
         // freeze until start UI button calls this.StartGame()
         FindObjectOfType<SnakeHead>().IsFrozen = true;
     }
@@ -27,12 +27,12 @@ public class ScoreBoard : MonoBehaviour
         FindObjectOfType<SnakeHead>().IsFrozen = false;
     }
 
-    private void OnAppleEaten()
+    private void OnFoodEaten()
     {
-        Debug.Log("**ScoreBoard saw apple eaten event**");
+        Debug.Log("**ScoreBoard saw food eaten event**");
         var score = Int32.Parse(scoreText.text);
-        PlayerStats.Points += pointsForEatenApple;
-        score += pointsForEatenApple;
+        PlayerStats.Points += pointsForEatenFood;
+        score += pointsForEatenFood;
         scoreText.text = score.ToString();
     }
 }
