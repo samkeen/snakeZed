@@ -3165,6 +3165,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 24300002, guid: f86fa8ec88c114828b8511eaee529a3b,
         type: 2}
+    - target: {fileID: 5501616911239711586, guid: 69db2c7231d514ebb928b13cd89a458d,
+        type: 3}
+      propertyPath: sounds.Array.data[0].name
+      value: Eat Food
+      objectReference: {fileID: 0}
     - target: {fileID: 5501616911239711587, guid: 69db2c7231d514ebb928b13cd89a458d,
         type: 3}
       propertyPath: m_LocalPosition.x

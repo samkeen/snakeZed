@@ -105,9 +105,9 @@ public class GameBoard : MonoBehaviour
     {
         Debug.Log($"@@@ GAME OVER @@@");
         CameraShaker.Instance.ShakeOnce(6f, 6f, .1f, 2f);
-        var snakeHead = FindObjectOfType<SnakeHead>();
-        snakeHead.IsFrozen = true;
-        snakeHead.GetComponentInChildren<ParticleSystem>().Play();
+        var playerHead = FindObjectOfType<SnakeHead>();
+        playerHead.IsFrozen = true;
+        playerHead.GetComponentInChildren<ParticleSystem>().Play();
         AudioManager.instance.StopPlay("Game Music");
         AudioManager.instance.Play("Death explosion");
         StartCoroutine(LoadLevelAfterDelay(deathMomentPause));
