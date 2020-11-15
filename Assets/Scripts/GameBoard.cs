@@ -116,7 +116,7 @@ public class GameBoard : MonoBehaviour
     IEnumerator LoadLevelAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene("Scenes/End Game");
+        SceneManager.LoadScene("Scenes/Start Game");
         AudioManager.instance.Play("Menu Music");
     }
 

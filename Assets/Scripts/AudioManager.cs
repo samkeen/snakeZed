@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -16,6 +17,8 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [SerializeField] private Sound[] sounds;
+    [SerializeField] private AudioMixerGroup audioMixerGroup;
+    
     
     
     void Awake()
@@ -35,6 +38,7 @@ public class AudioManager : MonoBehaviour
         foreach (var sound in sounds)
         {
             sound.source = gameObject.AddComponent<AudioSource>();
+            sound.source.outputAudioMixerGroup = audioMixerGroup;
             sound.source.clip = sound.clip;
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;

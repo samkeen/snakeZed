@@ -1,21 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-/// <summary>
-/// see: https://www.youtube.com/watch?v=zc8ac_qUXQY
-/// </summary>
 public class MainMenu : MonoBehaviour
 {
-    public void PlayGame()
+    [SerializeField] private TextMeshProUGUI score;
+
+
+    private void OnEnable()
     {
-        SceneManager.LoadScene("Scenes/Snake");
-    }
-    public void QuitGame()
-    {
-        Debug.Log("Quitting game");
-        Application.Quit();
-        
+        Debug.Log("CHECKING IF SHOW SCORE");
+        if (PlayerStats.Points > 0)
+        {
+            score.enabled = true;
+            score.text = $"Your score was: {PlayerStats.Points}. Great job!!";
+            // reset players point to zero
+            PlayerStats.Points = 0;
+        }
     }
 }
