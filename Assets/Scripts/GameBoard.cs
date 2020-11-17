@@ -16,7 +16,7 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private Transform plane;
     [SerializeField] private GameObject fruit;
     [SerializeField] private float deathMomentPause = 4f;
-    
+
     /// <summary>
     /// Distance from wall where food will not spawn
     /// </summary>
@@ -26,10 +26,27 @@ public class GameBoard : MonoBehaviour
     private GameObject foodInstance;
     private const int NeckSegment = 1;
 
+    private float planeMinX;
+    private float planeMaxX;
+    private float planeMinZ;
+    private float planeMaxZ;
+
     void Awake()
     {
+        CalculatePlaneBounds();
         SpawnFood();
         SubscribeToEvents();
+    }
+
+    private void CalculatePlaneBounds()
+    {
+        var planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
+        var scaleX = plane.localScale.x;
+        var scaleZ = plane.localScale.z;
+        planeMinX = planeMeshBounds.min.x * scaleX + foodSpawnWallBuffer;
+        planeMaxX = planeMeshBounds.max.x * scaleX - foodSpawnWallBuffer;
+        planeMinZ = planeMeshBounds.min.z * scaleZ + foodSpawnWallBuffer;
+        planeMaxZ = planeMeshBounds.max.z * scaleZ - foodSpawnWallBuffer;
     }
 
     private void SubscribeToEvents()
@@ -59,6 +76,7 @@ public class GameBoard : MonoBehaviour
         // https://app.clickup.com/t/e0rthb
         // random position within the bounds of the board
         var randomPosition = RandomPositionWithinBoard();
+        Debug.Log($"SPAWNING FOOD AT: >>>>  {randomPosition} <<<<<");
         if (foodInstance != null)
         {
             foodInstance.transform.position = randomPosition;
@@ -71,14 +89,7 @@ public class GameBoard : MonoBehaviour
 
     private Vector3 RandomPositionWithinBoard()
     {
-        var planeMeshBounds = plane.GetComponent<MeshFilter>().mesh.bounds;
-        var scaleX = plane.localScale.x;
-        var scaleZ = plane.localScale.z;
-        var minX = planeMeshBounds.min.x * scaleX + foodSpawnWallBuffer;
-        var maxX = planeMeshBounds.max.x * scaleX - foodSpawnWallBuffer;
-        var minZ = planeMeshBounds.min.z * scaleZ + foodSpawnWallBuffer;
-        var maxZ = planeMeshBounds.max.z * scaleZ - foodSpawnWallBuffer;
-        var randomPosition = new Vector3(Random.Range(minX, maxX), 0.5f, Random.Range(minZ, maxZ));
+        var randomPosition = new Vector3(Random.Range(planeMinX, planeMaxX), 0.5f, Random.Range(planeMinZ, planeMaxZ));
         return randomPosition;
     }
 
@@ -112,7 +123,7 @@ public class GameBoard : MonoBehaviour
         AudioManager.instance.Play("Death explosion");
         StartCoroutine(LoadLevelAfterDelay(deathMomentPause));
     }
-    
+
     IEnumerator LoadLevelAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
