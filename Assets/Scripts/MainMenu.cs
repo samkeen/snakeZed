@@ -15,10 +15,13 @@ public class MainMenu : MonoBehaviour
         Debug.Log("CHECKING IF SHOW SCORE");
         if (PlayerStats.Points > 0)
         {
-            score.enabled = true;
-            score.text = $"Your score was: {PlayerStats.Points}. Great job!!";
+            score.SetText($"Your score was: {PlayerStats.Points}. Great job!!");
             // reset players point to zero
             PlayerStats.Points = 0;
+        }
+        else
+        {
+            score.SetText("");
         }
     }
 }

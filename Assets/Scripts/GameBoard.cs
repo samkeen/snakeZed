@@ -16,6 +16,8 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private Transform plane;
     [SerializeField] private GameObject fruit;
     [SerializeField] private float deathMomentPause = 4f;
+    [SerializeField] private int pointsForEatenFood = 10;
+    
 
     /// <summary>
     /// Distance from wall where food will not spawn
@@ -30,12 +32,48 @@ public class GameBoard : MonoBehaviour
     private float planeMaxX;
     private float planeMinZ;
     private float planeMaxZ;
+    
+    private bool checkForAnyKey = false;
 
     void Awake()
     {
         CalculatePlaneBounds();
         SpawnFood();
         SubscribeToEvents();
+        FindObjectOfType<Food>().EatenEvent += OnFoodEaten;
+        InitGameState();
+    }
+
+    private static void InitGameState()
+    {
+        CanvasManager.GetInstance().setScoreText("0");
+        CanvasManager.GetInstance().ShowInstructions();
+        // freeze until start UI button calls this.StartGame()
+        FindObjectOfType<SnakeHead>().IsFrozen = true;
+    }
+
+    private void OnEnable()
+    {
+        checkForAnyKey = true;
+    }
+
+    private void Update()
+    {
+        if (checkForAnyKey && Input.anyKey)
+        {
+            Debug.Log("ANY KEY");
+            checkForAnyKey = false;
+            StartGame();
+        }
+    }
+    
+    public void StartGame()
+    {
+        // @todo hide instructions
+        CanvasManager.GetInstance().HideInstructions();
+        AudioManager.instance.StopPlay("Menu Music");
+        AudioManager.instance.Play("Game Music");
+        FindObjectOfType<SnakeHead>().IsFrozen = false;
     }
 
     private void CalculatePlaneBounds()
@@ -64,10 +102,18 @@ public class GameBoard : MonoBehaviour
 
     private void OnFoodEaten()
     {
-        Debug.Log("**GameBoard saw food eaten event**");
+        UpdateScore();
         FindObjectOfType<AudioManager>().Play("Eat Food");
         CameraShaker.Instance.ShakeOnce(1, 5, .1f, .5f);
         SpawnFood();
+    }
+
+    private void UpdateScore()
+    {
+        var score = Int32.Parse(CanvasManager.GetInstance().getScoreText());
+        PlayerStats.Points += pointsForEatenFood;
+        score += pointsForEatenFood;
+        CanvasManager.GetInstance().setScoreText(score.ToString());
     }
 
     private void SpawnFood()
@@ -128,11 +174,13 @@ public class GameBoard : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene("Scenes/Start Game");
+        CanvasManager.GetInstance().SwitchCanvas(CanvasType.MainMenu);
         AudioManager.instance.Play("Menu Music");
     }
 
     private void OnDisable()
     {
+        checkForAnyKey = false;
         UnsubscribeEvents();
     }
 
