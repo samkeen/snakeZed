@@ -179,6 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 47044592}
   - component: {fileID: 47044593}
+  - component: {fileID: 47044594}
   m_Layer: 5
   m_Name: Volume slider
   m_TagString: Untagged
@@ -251,13 +252,37 @@ MonoBehaviour:
   m_FillRect: {fileID: 1909492988}
   m_HandleRect: {fileID: 1110564718}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.0001
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 47044594}
+        m_MethodName: SetLevel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &47044594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47044591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1acbb76e102104d4992f5abb7157e56e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: f86fa8ec88c114828b8511eaee529a3b, type: 2}
 --- !u!1 &99457365
 GameObject:
   m_ObjectHideFlags: 0
