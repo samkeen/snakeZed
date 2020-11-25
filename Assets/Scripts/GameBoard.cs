@@ -40,7 +40,6 @@ public class GameBoard : MonoBehaviour
         CalculatePlaneBounds();
         SpawnFood();
         SubscribeToEvents();
-        FindObjectOfType<Food>().EatenEvent += OnFoodEaten;
         InitGameState();
     }
 
@@ -110,10 +109,8 @@ public class GameBoard : MonoBehaviour
 
     private void UpdateScore()
     {
-        var score = Int32.Parse(CanvasManager.GetInstance().getScoreText());
         PlayerStats.Points += pointsForEatenFood;
-        score += pointsForEatenFood;
-        CanvasManager.GetInstance().setScoreText(score.ToString());
+        CanvasManager.GetInstance().setScoreText(PlayerStats.Points.ToString());
     }
 
     private void SpawnFood()
