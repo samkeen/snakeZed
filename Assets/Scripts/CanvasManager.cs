@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -18,8 +19,9 @@ public class CanvasManager : Singleton<CanvasManager>
 {
     List<CanvasController> canvasControllerList;
     CanvasController lastActiveCanvas;
-    [SerializeField] private TextMeshProUGUI scoreField;
+    [SerializeField] private TextMeshProUGUI inGameScoreField;
     [SerializeField] private TextMeshProUGUI InstructionsField;
+    [SerializeField] private TextMeshProUGUI mainMenuGameFeedback;
     
 
     protected override void Awake()
@@ -35,13 +37,9 @@ public class CanvasManager : Singleton<CanvasManager>
         SwitchCanvas(CanvasType.MainMenu);
     }
 
-    public string getScoreText()
+    public void setInGameScoreText(string score)
     {
-        return scoreField.text;
-    }
-    public void setScoreText(string score)
-    {
-        scoreField.text = score;
+        inGameScoreField.text = score;
     }
 
     public void SwitchCanvas(CanvasType _type)
@@ -56,8 +54,32 @@ public class CanvasManager : Singleton<CanvasManager>
         {
             desiredCanvas.gameObject.SetActive(true);
             lastActiveCanvas = desiredCanvas;
+            if (_type == CanvasType.MainMenu)
+            {
+                DisplayObtainedScore();
+            }
         }
         else { Debug.LogWarning("The desired canvas was not found!"); }
+    }
+
+    private void DisplayObtainedScore()
+    {
+        var obtainedScore = PlayerStats.Points;
+        var message = "";
+        if (obtainedScore >= 100)
+        {
+            message = "Great job!!";
+            
+        }
+        else if(obtainedScore >= 50)
+        {
+            message = "Good job!";
+        }
+        else
+        {
+            message = "Better luck next time";
+        }
+        mainMenuGameFeedback.SetText($"Your score was: {obtainedScore}. {message}");
     }
 
     public void ShowInstructions()

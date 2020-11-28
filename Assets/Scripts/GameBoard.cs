@@ -45,7 +45,7 @@ public class GameBoard : MonoBehaviour
 
     private static void InitGameState()
     {
-        CanvasManager.GetInstance().setScoreText("0");
+        CanvasManager.GetInstance().setInGameScoreText("0");
         CanvasManager.GetInstance().ShowInstructions();
         // freeze until start UI button calls this.StartGame()
         FindObjectOfType<SnakeHead>().IsFrozen = true;
@@ -70,6 +70,7 @@ public class GameBoard : MonoBehaviour
     {
         // @todo hide instructions
         CanvasManager.GetInstance().HideInstructions();
+        PlayerStats.Points = 0;
         AudioManager.instance.StopPlay("Menu Music");
         AudioManager.instance.Play("Game Music");
         FindObjectOfType<SnakeHead>().IsFrozen = false;
@@ -110,7 +111,7 @@ public class GameBoard : MonoBehaviour
     private void UpdateScore()
     {
         PlayerStats.Points += pointsForEatenFood;
-        CanvasManager.GetInstance().setScoreText(PlayerStats.Points.ToString());
+        CanvasManager.GetInstance().setInGameScoreText(PlayerStats.Points.ToString());
     }
 
     private void SpawnFood()
