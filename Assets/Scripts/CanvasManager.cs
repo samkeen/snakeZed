@@ -54,9 +54,18 @@ public class CanvasManager : Singleton<CanvasManager>
         {
             desiredCanvas.gameObject.SetActive(true);
             lastActiveCanvas = desiredCanvas;
-            if (_type == CanvasType.MainMenu)
+            if (_type == CanvasType.MainMenu && PlayerStats.PlayerStartedGame)
             {
                 DisplayObtainedScore();
+            }
+
+            if (_type == CanvasType.GameUI)
+            {
+                Cursor.visible = false;
+            }
+            else
+            {
+                Cursor.visible = true;
             }
         }
         else { Debug.LogWarning("The desired canvas was not found!"); }

@@ -71,6 +71,7 @@ public class GameBoard : MonoBehaviour
         // @todo hide instructions
         CanvasManager.GetInstance().HideInstructions();
         PlayerStats.Points = 0;
+        PlayerStats.PlayerStartedGame = true;
         AudioManager.instance.StopPlay("Menu Music");
         AudioManager.instance.Play("Game Music");
         FindObjectOfType<SnakeHead>().IsFrozen = false;
